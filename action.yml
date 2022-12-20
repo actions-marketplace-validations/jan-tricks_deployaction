@@ -1,30 +1,21 @@
-name: 'jan-tricks/deployaction'
-description: 'Wrapper for Deployer'
-
+name: 'Hello World'
+description: 'Greet someone'
 inputs:
-  stage:
+  who-to-greet:  # id of input
+    description: 'Who to greet'
     required: true
-    description: If it is stage or production.
-  php-bin:
-    required: false
-    default: '/usr/local/bin/php'
-    description: Path to the PHP binary.
-  php-version:
-    required: false
-    default: '8.0'
-    description: Version of PHP to use while deploying.
-
+    default: 'World'
+outputs:
+  random-number:
+    description: "Random number"
+    value: ${{ steps.random-number-generator.outputs.random-number }}
 runs:
   using: "composite"
   steps:
-      - uses: actions/checkout@v2
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ inputs.php-version }}
-
-      - run echo "${{ github.repository}}" >> $GITHUB_REPOSITORY
-        shell: bash
-      - run echo "${{ inputs.php-version}}" >> $INPUTS_PHP_VERSION
-        shell: bash
+    - run: echo Hello ${{ inputs.who-to-greet }}.
+      shell: bash
+    - id: random-number-generator
+      run: echo "random-number=$(echo $RANDOM)" >> $GITHUB_OUTPUT
+      shell: bash
+    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
+      shell: bash
