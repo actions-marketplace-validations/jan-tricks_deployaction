@@ -1,0 +1,30 @@
+name: 'jan-tricks/deployaction'
+description: 'Wrapper for Deployer'
+
+inputs:
+  stage:
+    required: true
+    description: If it is stage or production.
+  php-bin:
+    required: false
+    default: '/usr/local/bin/php'
+    description: Path to the PHP binary.
+  php-version:
+    required: false
+    default: '8.0'
+    description: Version of PHP to use while deploying.
+
+runs:
+  using: "composite"
+  steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ inputs.php-version }}
+
+      - run echo "${{ github.repository}}" >> $GITHUB_REPOSITORY
+        shell: bash
+      - run echo "${{ inputs.php-version}}" >> $INPUTS_PHP_VERSION
+        shell: bash
